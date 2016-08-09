@@ -32,7 +32,7 @@ void ofApp::setup() {
     sceneManager.add(new InfoScene(sceneManager,data));
     
     // overlap scenes when transitioning
-    sceneManager.setOverlap(true);
+    //sceneManager.setOverlap(true);
     
     //sceneManager.setup(true);	// true = setup all the scenes now (not on the fly)
 	ofSetLogLevel("ofxSceneManager", OF_LOG_VERBOSE); // lets see whats going on inside

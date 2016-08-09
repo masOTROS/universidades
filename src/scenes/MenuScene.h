@@ -27,7 +27,7 @@ public:
         provincia.loadData(img);
         provincia.setAnchorPercent(0.5,0.5);
         provincia.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.5));
-        
+
         ofLoadImage(img,"01_Menu/universidad.png");
         universidad.loadData(img);
         universidad.setAnchorPercent(0.5,0.5);
@@ -126,12 +126,15 @@ public:
         if(isExiting())
             return;
         if(rama.inside(ofPoint(x,y))){
+            rama.size.animateTo(1.15);
             sceneManager.gotoScene(RAMA_SCENE_NAME);
         }
         else if(provincia.inside(ofPoint(x,y))){
+            provincia.size.animateTo(1.15);
             sceneManager.gotoScene(PROVINCIA_SCENE_NAME);
         }
         else if(universidad.inside(ofPoint(x,y))){
+            universidad.size.animateTo(1.15);
             sceneManager.gotoScene(UNIVERSIDAD_SCENE_NAME);
         }
     }

@@ -20,6 +20,9 @@ public:
     // scene setup
     void setup() {
         title.setPosition(ofGetWidth()*0.5,-ofGetHeight()*0.6);
+        
+        data.resetFiltered();
+        
         time=ofGetElapsedTimef();
     }
     
