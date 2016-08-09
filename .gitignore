@@ -73,3 +73,5 @@ ipch/
 
 # don't ignore the .gitignore file
 !.gitignore
+*.db
+*.opendb
