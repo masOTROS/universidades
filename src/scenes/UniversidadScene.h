@@ -26,10 +26,23 @@ public:
         down.setAnchorPercent(0.5,0.5);
         down.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.8));
         down.color.setDuration(0.5f);
+        
+        ofLoadImage(img,"04_Universidad/titulo.png");
+        title.loadData(img);
+        title.setAnchorPercent(0.5,0.5);
+        title.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.1));
+        title.color.setDuration(0.5f);
+        title.size.setDuration(0.5f);
+        
+        ofLoadImage(img,"04_Universidad/container.png");
+        container.loadData(img);
+        container.setAnchorPercent(1.0,1.0);
     }
     
     // scene setup
     void setup() {
+        title.setColor(ofColor(255,0));
+
         down.setColor(ofColor(255,0));
         up.setColor(ofColor(255,0));
         
@@ -63,6 +76,8 @@ public:
         
         // called on first enter update
         if(isEnteringFirst()) {
+            title.color.animateTo(ofColor(255,255));
+            
             down.color.animateTo(ofColor(255,((maxOffset-offset)>0)?255:0));
             up.color.animateTo(ofColor(255,(offset>0)?255:0));
             
@@ -91,6 +106,7 @@ public:
         float dt = t - time;
         time = t;
         
+        title.update(dt);
         for(int i=0;i<universidades.size();i++){
             universidades[i].update(dt);
         }
@@ -125,9 +141,18 @@ public:
     
     // draw
     void draw() {
+        title.draw();
         ofPushMatrix();
         ofTranslate(0,translate.getCurrentValue());
         for(int i=0;i<universidades.size();i++){
+            ofPushMatrix();
+            ofTranslate(universidades[i].position.getCurrentPosition());
+            ofTranslate(universidades[i].getWidth()*0.5,universidades[i].getHeight()*0.5);
+            ofPushStyle();
+            ofSetColor(ofColor(255,universidades[i].color.getCurrentColor().a));
+            container.draw(0,0);
+            ofPopStyle();
+            ofPopMatrix();
             universidades[i].draw();
         }
         ofPopMatrix();
@@ -189,7 +214,9 @@ public:
     }
     
     ofxAnimatableObject<ofTexture> up,down;
+    ofxAnimatableObject<ofTexture> title;
     vector< ofxAnimatableObject<ofTrueTypeFont> > universidades;
+    ofTexture container;
     int selected;
     unsigned int offset,maxOffset;
     ofxAnimatableFloat translate;

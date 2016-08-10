@@ -13,10 +13,19 @@ public:
     
     // set the scene name through the base class initializer
     ProvinciaScene(ofxSceneManager& sm, Data& d) : sceneManager(sm), data(d), ofxScene(PROVINCIA_SCENE_NAME, false) {
+        ofPixels img;
+        ofLoadImage(img,"03_Provincia/titulo.png");
+        title.loadData(img);
+        title.setAnchorPercent(0.5,0.5);
+        title.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.05));
+        title.color.setDuration(0.5f);
+        title.size.setDuration(0.5f);
     }
     
     // scene setup
     void setup() {
+        title.setColor(ofColor(255,0));
+        
         int total = data.filteredProvincias.size();
         
         provincias.clear();
@@ -55,6 +64,7 @@ public:
         
         // called on first enter update
         if(isEnteringFirst()) {
+            title.color.animateTo(ofColor(255,255));
             for(int i=0;i<provincias.size();i++){
                 provincias[i].color.animateToAfterDelay(ofColor(255,255),i*0.1f);
             }
@@ -77,6 +87,7 @@ public:
         float dt = t - time;
         time = t;
         
+        title.update(dt);
         for(int i=0;i<provincias.size();i++){
             provincias[i].update(dt);
         }
@@ -105,6 +116,7 @@ public:
     
     // draw
     void draw() {
+        title.draw();
         for(int i=0;i<provincias.size();i++){
             provincias[i].draw();
         }
@@ -147,6 +159,7 @@ public:
     }
     
     vector< ofxAnimatableObject<ofTrueTypeFont> > provincias;
+    ofxAnimatableObject<ofTexture> title;
     int selected;
     float time;
     

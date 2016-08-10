@@ -1,5 +1,7 @@
 #include "Data.h"
 
+bool alphabetic (int i,int j) { return (i<j); }
+
 //--------------------------------------------------------------
 void Data::setup(){
     ofSetLogLevel("ofxCsv", OF_LOG_VERBOSE); // See what's going on inside.

@@ -15,10 +15,19 @@ public:
         ofLoadImage(img,"02_Rama/option.png");
         option.loadData(img);
         option.setAnchorPercent(0.475f,0.475f);
+        
+        ofLoadImage(img,"02_Rama/titulo.png");
+        title.loadData(img);
+        title.setAnchorPercent(0.5,0.5);
+        title.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.2));
+        title.color.setDuration(0.5f);
+        title.size.setDuration(0.5f);
     }
     
     // scene setup
     void setup() {
+        title.setColor(ofColor(255,0));
+        
         int total = data.filteredRamas.size();
         
         ramas.clear();
@@ -49,6 +58,7 @@ public:
 		
         // called on first enter update
         if(isEnteringFirst()) {
+            title.color.animateTo(ofColor(255,255));
             for(int i=0;i<ramas.size();i++){
                 ramas[i].color.animateToAfterDelay(ofColor(0,255),i*0.25f);
                 ramas[i].size.animateToAfterDelay(1.0f,i*0.25f);
@@ -71,6 +81,7 @@ public:
         float t = ofGetElapsedTimef();
         float dt = t - time;
         time = t;
+        title.update(dt);
         for(int i=0;i<ramas.size();i++){
             ramas[i].update(dt);
         }
@@ -81,6 +92,8 @@ public:
 		
         // called on first exit update
         if(isExitingFirst()) {
+            title.color.animateTo(ofColor(255,0));
+            
             for(int i=0;i<ramas.size();i++){
                 ramas[i].color.animateTo(ofColor(0,0));
             }
@@ -99,6 +112,8 @@ public:
     
     // draw
     void draw() {
+        title.draw();
+
         for(int i=0;i<ramas.size();i++){
             ofPushMatrix();
             ofTranslate(ramas[i].position.getCurrentPosition());
@@ -139,6 +154,7 @@ public:
     
     vector< ofxAnimatableObject<ofTrueTypeFont> > ramas;
     int selected;
+    ofxAnimatableObject<ofTexture> title;
     ofTexture option;
     float time;
 

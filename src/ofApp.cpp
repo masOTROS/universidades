@@ -20,7 +20,7 @@ void ofApp::setup() {
     inicio.loadData(img);
     inicio.setAnchorPercent(0.5,0.5);
     inicio.color.setDuration(0.75f);
-    inicio.setPosition(ofPoint(1630,148));
+    inicio.setPosition(ofPoint(ofGetWidth()*0.95,ofGetHeight()*0.1));
     inicio.setColor(ofColor(255,0));
     
     data.setup();
