@@ -5,7 +5,7 @@
 #include "ofxAnimatableObject.h"
 #include "Data.h"
 
-#define UNI_MARGIN 75
+#define UNI_MARGIN 90
 #define UNI_MAX 6
 
 class UniversidadScene : public ofxScene {
@@ -23,7 +23,7 @@ public:
         ofLoadImage(img,"04_Universidad/down.png");
         down.loadData(img);
         down.setAnchorPercent(0.5,0.5);
-        down.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.7));
+        down.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.8));
     }
     
     // scene setup
@@ -173,9 +173,9 @@ public:
                 selected=i;
                 data.applyUniversidadFilter(data.filteredUniversidades[i]);
                 universidades[i].size.animateTo(1.15);
-                if(!data.ramaFilterApplied)
+                if(!data.ramaFilterApplied && data.filteredRamas.size()>1)
                     sceneManager.gotoScene(RAMA_SCENE_NAME);
-                else if(!data.provinciaFilterApplied)
+                else if(!data.provinciaFilterApplied && data.filteredUniversidades.size()>1)
                     sceneManager.gotoScene(PROVINCIA_SCENE_NAME);
                 else
                     sceneManager.gotoScene(INFO_SCENE_NAME);

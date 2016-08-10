@@ -124,9 +124,9 @@ public:
                 selected=i;
                 data.applyRamaFilter(data.filteredRamas[i]);
                 ramas[i].size.animateTo(1.15);
-                if(!data.provinciaFilterApplied)
+                if(!data.provinciaFilterApplied && data.filteredProvincias.size()>1)
                     sceneManager.gotoScene(PROVINCIA_SCENE_NAME);
-                else if(!data.universidadFilterApplied)
+                else if(!data.universidadFilterApplied && data.filteredUniversidades.size()>1)
                     sceneManager.gotoScene(UNIVERSIDAD_SCENE_NAME);
                 else
                     sceneManager.gotoScene(INFO_SCENE_NAME);

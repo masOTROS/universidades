@@ -5,7 +5,7 @@
 #include "ofxAnimatableObject.h"
 #include "Data.h"
 
-#define PROV_MARGIN 75
+#define PROV_MARGIN 90
 
 class ProvinciaScene : public ofxScene {
     
@@ -28,12 +28,17 @@ public:
             provincias[i].setText(data.filteredProvincias[i]->nombre);
             provincias[i].setAnchorPercent(0.5,0.5);
             provincias[i].setSize(1.);
-            if(i<floor(total/3))
-                provincias[i].setPosition(ofGetWidth()*0.20, ofGetHeight()*0.5 - (floor(total/3)*PROV_MARGIN)/2.0f + i*PROV_MARGIN + PROV_MARGIN/2);
-            else if(i>=ceil(2*total/3))
-                provincias[i].setPosition(ofGetWidth()*0.80, ofGetHeight()*0.5 - ((total-ceil(2*total/3))*PROV_MARGIN)/2.0f + (i-ceil(2*total/3))*PROV_MARGIN + PROV_MARGIN/2);
-            else
-                provincias[i].setPosition(ofGetWidth()*0.50, ofGetHeight()*0.5 - ((ceil(2*total/3)-floor(total/3))*PROV_MARGIN)/2.0f + (i-floor(total/3))*PROV_MARGIN + PROV_MARGIN/2);
+            if(total<4){
+                provincias[i].setPosition(ofGetWidth()*0.50, ofGetHeight()*0.5 - (total*PROV_MARGIN)/2.0f + i*PROV_MARGIN + PROV_MARGIN/2);
+            }
+            else{
+                if(i<floor(total/3))
+                    provincias[i].setPosition(ofGetWidth()*0.20, ofGetHeight()*0.5 - (floor(total/3)*PROV_MARGIN)/2.0f + i*PROV_MARGIN + PROV_MARGIN/2);
+                else if(i>=ceil(2*total/3))
+                    provincias[i].setPosition(ofGetWidth()*0.80, ofGetHeight()*0.5 - ((total-ceil(2*total/3))*PROV_MARGIN)/2.0f + (i-ceil(2*total/3))*PROV_MARGIN + PROV_MARGIN/2);
+                else
+                    provincias[i].setPosition(ofGetWidth()*0.50, ofGetHeight()*0.5 - ((ceil(2*total/3)-floor(total/3))*PROV_MARGIN)/2.0f + (i-floor(total/3))*PROV_MARGIN + PROV_MARGIN/2);
+            }
 
             provincias[i].setColor(ofColor(255,0));
         }
@@ -102,14 +107,16 @@ public:
             provincias[i].draw();
         }
         
-        float x0=(provincias[0].position.getCurrentPosition().x+provincias[provincias.size()/2].position.getCurrentPosition().x)/2;
-        float x1=(provincias[provincias.size()/2].position.getCurrentPosition().x+provincias[provincias.size()-1].position.getCurrentPosition().x)/2;
-        
-        ofPushStyle();
-        ofSetColor(provincias[0].color.getCurrentColor());
-        ofDrawLine(x0,ofGetHeight()*0.5-PROV_MARGIN*provincias.size()/5,x0,ofGetHeight()*0.5+PROV_MARGIN*provincias.size()/5);
-        ofDrawLine(x1,ofGetHeight()*0.5-PROV_MARGIN*provincias.size()/5,x1,ofGetHeight()*0.5+PROV_MARGIN*provincias.size()/5);
-        ofPopStyle();
+        if(provincias.size()>4){
+            float x0=(provincias[0].position.getCurrentPosition().x+provincias[provincias.size()/2].position.getCurrentPosition().x)/2;
+            float x1=(provincias[provincias.size()/2].position.getCurrentPosition().x+provincias[provincias.size()-1].position.getCurrentPosition().x)/2;
+            
+            ofPushStyle();
+            ofSetColor(provincias[0].color.getCurrentColor());
+            ofDrawLine(x0,ofGetHeight()*0.5-PROV_MARGIN*provincias.size()/5,x0,ofGetHeight()*0.5+PROV_MARGIN*provincias.size()/5);
+            ofDrawLine(x1,ofGetHeight()*0.5-PROV_MARGIN*provincias.size()/5,x1,ofGetHeight()*0.5+PROV_MARGIN*provincias.size()/5);
+            ofPopStyle();
+        }
     }
     
     // cleanup
@@ -126,9 +133,9 @@ public:
                 selected=i;
                 data.applyProvinciaFilter(data.filteredProvincias[i]);
                 provincias[i].size.animateTo(1.15);
-                if(!data.ramaFilterApplied)
+                if(!data.ramaFilterApplied && data.filteredRamas.size()>1)
                     sceneManager.gotoScene(RAMA_SCENE_NAME);
-                else if(!data.universidadFilterApplied)
+                else if(!data.universidadFilterApplied && data.filteredUniversidades.size()>1)
                     sceneManager.gotoScene(UNIVERSIDAD_SCENE_NAME);
                 else
                     sceneManager.gotoScene(INFO_SCENE_NAME);
