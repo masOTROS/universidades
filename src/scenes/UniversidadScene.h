@@ -5,7 +5,7 @@
 #include "ofxAnimatableObject.h"
 #include "Data.h"
 
-#define UNI_MARGIN 90
+#define UNI_MARGIN 100
 #define UNI_MAX 6
 
 class UniversidadScene : public ofxScene {
@@ -24,7 +24,7 @@ public:
         ofLoadImage(img,"04_Universidad/down.png");
         down.loadData(img);
         down.setAnchorPercent(0.5,0.5);
-        down.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.8));
+        down.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.85));
         down.color.setDuration(0.5f);
         
         ofLoadImage(img,"04_Universidad/titulo.png");
@@ -147,10 +147,12 @@ public:
         for(int i=0;i<universidades.size();i++){
             ofPushMatrix();
             ofTranslate(universidades[i].position.getCurrentPosition());
-            ofTranslate(universidades[i].getWidth()*0.5,universidades[i].getHeight()*0.5);
+            ofTranslate(universidades[i].getWidth()*0.55,35);
+            ofScale(universidades[i].size.getCurrentValue(),universidades[i].size.getCurrentValue());
             ofPushStyle();
             ofSetColor(ofColor(255,universidades[i].color.getCurrentColor().a));
             container.draw(0,0);
+            ofDrawLine(0,-1,-universidades[i].getWidth()*1.05,-1);
             ofPopStyle();
             ofPopMatrix();
             universidades[i].draw();

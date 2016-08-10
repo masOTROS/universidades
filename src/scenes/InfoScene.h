@@ -30,7 +30,7 @@ public:
         provincia.ofTrueTypeFont::setLineHeight(32);
         provincia.setAnchorPercent(0.0,0.5);
         provincia.setSize(1.);
-        provincia.setPosition(75, 375);
+        provincia.setPosition(75, 385);
         
         universidad.ofTrueTypeFont::load("DINRegular.otf",44);
         universidad.ofTrueTypeFont::setLineHeight(32);
