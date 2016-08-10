@@ -35,6 +35,8 @@ public:
             else
                 ramas[i].setPosition(ofGetWidth()*0.5-((total-floor(total/2))*RAMA_MARGIN)/2.0f + (i-floor(total/2))*RAMA_MARGIN + RAMA_MARGIN/2, ofGetHeight()*0.5 + 100);
             ramas[i].setColor(ofColor(0,0));
+            ramas[i].color.setDuration(0.5f);
+            ramas[i].size.setDuration(0.5f);
         }
         
         selected=0;
@@ -48,7 +50,7 @@ public:
         // called on first enter update
         if(isEnteringFirst()) {
             for(int i=0;i<ramas.size();i++){
-                ramas[i].color.animateToAfterDelay(ofColor(0,255),i*0.5f);
+                ramas[i].color.animateToAfterDelay(ofColor(0,255),i*0.25f);
                 ramas[i].size.animateToAfterDelay(1.0f,i*0.5f);
             }
             

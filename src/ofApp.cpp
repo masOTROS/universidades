@@ -20,6 +20,7 @@ void ofApp::setup() {
     inicio.loadData(img);
     inicio.setAnchorPercent(0.5,0.5);
     inicio.setPosition(ofPoint(1630,148));
+    inicio.setColor(ofColor(255,0));
     
     data.setup();
     
@@ -160,6 +161,7 @@ void ofApp::mousePressed(int x, int y, int button) {
     if(inicio.inside(ofPoint(x,y))){
         sceneManager.gotoScene(INICIO_SCENE_NAME, false);
     }
+    cout<<sceneManager.getCurrentScene()->getName()<<endl;
 }
 
 //--------------------------------------------------------------

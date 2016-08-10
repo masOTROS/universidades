@@ -20,23 +20,23 @@ public:
         title.loadData(img);
         title.setAnchorPercent(0.0f,0.0f);
         
-        rama.ofTrueTypeFont::load("DINBold.otf",32);
+        rama.ofTrueTypeFont::load("DINBold.otf",44);
         rama.ofTrueTypeFont::setLineHeight(32);
         rama.setAnchorPercent(0.0,0.5);
         rama.setSize(1.);
         rama.setPosition(75, 325);
         
-        provincia.ofTrueTypeFont::load("DINRegular.otf",32);
+        provincia.ofTrueTypeFont::load("DINRegular.otf",44);
         provincia.ofTrueTypeFont::setLineHeight(32);
         provincia.setAnchorPercent(0.0,0.5);
         provincia.setSize(1.);
         provincia.setPosition(75, 375);
         
-        universidad.ofTrueTypeFont::load("DINRegular.otf",32);
+        universidad.ofTrueTypeFont::load("DINRegular.otf",44);
         universidad.ofTrueTypeFont::setLineHeight(32);
         universidad.setAnchorPercent(0.0,0.5);
         universidad.setSize(1.);
-        universidad.setPosition(75, 425);
+        universidad.setPosition(75, 445);
         
         disciplines.assign(5,ofxAnimatableObject<ofTexture>());
         
@@ -57,7 +57,7 @@ public:
         
         for(int i =0; i<disciplines.size(); i++){
             disciplines[i].setAnchorPercent(0.5,0.5);
-            disciplines[i].setPosition(ofGetWidth()*0.5,ofGetHeight()*0.75);
+            disciplines[i].setPosition(ofGetWidth()*0.5,ofGetHeight()*0.7);
         }
         selected = 0;
     }

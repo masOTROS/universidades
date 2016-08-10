@@ -27,6 +27,8 @@ public:
             provincias[i].ofTrueTypeFont::setLineHeight(32);
             provincias[i].setText(data.filteredProvincias[i]->nombre);
             provincias[i].setAnchorPercent(0.5,0.5);
+            provincias[i].color.setDuration(0.5f);
+            provincias[i].size.setDuration(0.5f);
             provincias[i].setSize(1.);
             if(total<4){
                 provincias[i].setPosition(ofGetWidth()*0.50, ofGetHeight()*0.5 - (total*PROV_MARGIN)/2.0f + i*PROV_MARGIN + PROV_MARGIN/2);

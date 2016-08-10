@@ -19,11 +19,13 @@ public:
         up.loadData(img);
         up.setAnchorPercent(0.5,0.5);
         up.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.2));
+        up.color.setDuration(0.5f);
         
         ofLoadImage(img,"04_Universidad/down.png");
         down.loadData(img);
         down.setAnchorPercent(0.5,0.5);
         down.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.8));
+        down.color.setDuration(0.5f);
     }
     
     // scene setup
@@ -41,6 +43,8 @@ public:
             universidades[i].ofTrueTypeFont::setLineHeight(32);
             universidades[i].setText(data.filteredUniversidades[i]->nombre);
             universidades[i].setAnchorPercent(0.5,0.5);
+            universidades[i].color.setDuration(0.5f);
+            universidades[i].size.setDuration(0.5f);
             universidades[i].setSize(1.);
             universidades[i].setPosition(ofGetWidth()*0.5, ofGetHeight()*0.25 + i*UNI_MARGIN + UNI_MARGIN/2);
             universidades[i].setColor(ofColor(255,0));

@@ -12,11 +12,12 @@ public:
         ofImage img;
         ofLoadImage(img,"00_Inicio/background.png");
         background.loadData(img);
-        background.color.setDuration(1.0f);
+        background.color.setDuration(0.5f);
         
         ofLoadImage(img,"00_Inicio/front.png");
         front.loadData(img);
         front.position.setDuration(2.0f);
+        front.color.setDuration(0.5f);
     }
     
     // scene setup

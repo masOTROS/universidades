@@ -17,21 +17,29 @@ public:
         title.loadData(img);
         title.setAnchorPercent(0.5,0.5);
         title.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.2));
+        title.color.setDuration(0.5f);
+        title.size.setDuration(0.5f);
         
         ofLoadImage(img,"01_Menu/rama.png");
         rama.loadData(img);
         rama.setAnchorPercent(0.5,0.5);
         rama.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.5));
+        rama.color.setDuration(0.5f);
+        rama.size.setDuration(0.5f);
         
         ofLoadImage(img,"01_Menu/provincia.png");
         provincia.loadData(img);
         provincia.setAnchorPercent(0.5,0.5);
         provincia.setPosition(ofPoint(ofGetWidth()*0.75,ofGetHeight()*0.5));
-
+        provincia.color.setDuration(0.5f);
+        provincia.size.setDuration(0.5f);
+        
         ofLoadImage(img,"01_Menu/universidad.png");
         universidad.loadData(img);
         universidad.setAnchorPercent(0.5,0.5);
         universidad.setPosition(ofPoint(ofGetWidth()*0.25,ofGetHeight()*0.5));
+        universidad.color.setDuration(0.5f);
+        universidad.size.setDuration(0.5f);
     }
     
     // scene setup
