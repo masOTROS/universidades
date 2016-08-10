@@ -51,7 +51,7 @@ public:
         if(isEnteringFirst()) {
             for(int i=0;i<ramas.size();i++){
                 ramas[i].color.animateToAfterDelay(ofColor(0,255),i*0.25f);
-                ramas[i].size.animateToAfterDelay(1.0f,i*0.5f);
+                ramas[i].size.animateToAfterDelay(1.0f,i*0.25f);
             }
             
             ofLogNotice(RAMA_SCENE_NAME) << "update enter";

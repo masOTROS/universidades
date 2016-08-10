@@ -8,7 +8,7 @@
 class InicioScene : public ofxScene {
 public:
     // set the scene name through the base class initializer
-    InicioScene(ofxSceneManager& sm, Data& d) : sceneManager(sm), data(d), ofxScene(INICIO_SCENE_NAME, false) {
+    InicioScene(ofxSceneManager& sm, Data& d, ofxAnimatableObject<ofTexture>& i) : sceneManager(sm), data(d), inicio(i), ofxScene(INICIO_SCENE_NAME, false) {
         ofImage img;
         ofLoadImage(img,"00_Inicio/background.png");
         background.loadData(img);
@@ -40,6 +40,8 @@ public:
             background.color.animateTo(ofColor(255,255));
             front.position.animateTo(ofPoint(0,0));
             
+            inicio.color.animateTo(ofColor(255,0));
+            
             ofLogNotice(INICIO_SCENE_NAME) << "update enter";
         }
         
@@ -68,6 +70,8 @@ public:
         if(isExitingFirst()) {
             background.color.animateTo(ofColor(255,0));
             front.color.animateTo(ofColor(255,0));
+            
+            inicio.color.animateToAfterDelay(ofColor(255,255),1.0f);
             
             ofLogNotice(INICIO_SCENE_NAME) << "update exit";
         }
@@ -102,6 +106,7 @@ public:
     ofxAnimatableObject<ofTexture> front;
     float time;
     
+    ofxAnimatableObject<ofTexture>& inicio;
     Data& data;
     ofxSceneManager& sceneManager;
 };

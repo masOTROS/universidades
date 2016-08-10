@@ -19,13 +19,14 @@ void ofApp::setup() {
     ofLoadImage(img,"inicio.png");
     inicio.loadData(img);
     inicio.setAnchorPercent(0.5,0.5);
+    inicio.color.setDuration(0.75f);
     inicio.setPosition(ofPoint(1630,148));
     inicio.setColor(ofColor(255,0));
     
     data.setup();
     
 	// load scenes
-    sceneManager.add(new InicioScene(sceneManager,data));
+    sceneManager.add(new InicioScene(sceneManager,data,inicio));
     sceneManager.add(new MenuScene(sceneManager,data));
     sceneManager.add(new RamaScene(sceneManager,data));
     sceneManager.add(new ProvinciaScene(sceneManager,data));
@@ -161,7 +162,6 @@ void ofApp::mousePressed(int x, int y, int button) {
     if(inicio.inside(ofPoint(x,y))){
         sceneManager.gotoScene(INICIO_SCENE_NAME, false);
     }
-    cout<<sceneManager.getCurrentScene()->getName()<<endl;
 }
 
 //--------------------------------------------------------------
