@@ -21,17 +21,17 @@ public:
         ofLoadImage(img,"01_Menu/rama.png");
         rama.loadData(img);
         rama.setAnchorPercent(0.5,0.5);
-        rama.setPosition(ofPoint(ofGetWidth()*0.25,ofGetHeight()*0.5));
+        rama.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.5));
         
         ofLoadImage(img,"01_Menu/provincia.png");
         provincia.loadData(img);
         provincia.setAnchorPercent(0.5,0.5);
-        provincia.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.5));
+        provincia.setPosition(ofPoint(ofGetWidth()*0.75,ofGetHeight()*0.5));
 
         ofLoadImage(img,"01_Menu/universidad.png");
         universidad.loadData(img);
         universidad.setAnchorPercent(0.5,0.5);
-        universidad.setPosition(ofPoint(ofGetWidth()*0.75,ofGetHeight()*0.5));
+        universidad.setPosition(ofPoint(ofGetWidth()*0.25,ofGetHeight()*0.5));
     }
     
     // scene setup
@@ -115,6 +115,15 @@ public:
         rama.draw();
         provincia.draw();
         universidad.draw();
+        
+        ofPoint middleUR=(universidad.position.getCurrentPosition()+rama.position.getCurrentPosition())/2;
+        ofPoint middleRP=(rama.position.getCurrentPosition()+provincia.position.getCurrentPosition())/2;
+        
+        ofPushStyle();
+        ofSetColor(universidad.color.getCurrentColor());
+        ofDrawLine(middleUR-ofPoint(0,100),middleUR+ofPoint(0,100));
+        ofDrawLine(middleRP-ofPoint(0,100),middleRP+ofPoint(0,100));
+        ofPopStyle();
     }
     
     // cleanup

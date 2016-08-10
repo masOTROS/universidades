@@ -130,16 +130,19 @@ void Data::resetFiltered(){
     for(int i=0; i<Ramas.size(); i++){
         filteredRamas.push_back(&Ramas[i]);
     }
+    ramaFilterApplied=false;
     
     filteredProvincias.clear();
     for(int i=0; i<Provincias.size(); i++){
         filteredProvincias.push_back(&Provincias[i]);
     }
+    provinciaFilterApplied=false;
     
     filteredUniversidades.clear();
     for(int i=0; i<Universidades.size(); i++){
         filteredUniversidades.push_back(&Universidades[i]);
     }
+    universidadFilterApplied=false;
 }
 
 //--------------------------------------------------------------
@@ -170,6 +173,7 @@ void Data::applyRamaFilter(Rama * r){
         else
             ++it;
     }
+    ramaFilterApplied=true;
 }
 
 //--------------------------------------------------------------
@@ -200,6 +204,7 @@ void Data::applyProvinciaFilter(Provincia * p){
         else
             ++it;
     }
+    provinciaFilterApplied=true;
 }
 
 
@@ -231,6 +236,7 @@ void Data::applyUniversidadFilter(Universidad * u){
         else
             ++it;
     }
+    universidadFilterApplied=true;
 }
 
 //--------------------------------------------------------------

@@ -4,35 +4,40 @@
 #include "scenes.h"
 #include "ofxAnimatableObject.h"
 
+#define RAMA_MARGIN 550
+
 class RamaScene : public ofxScene {
 public:
     
     // set the scene name through the base class initializer
     RamaScene(ofxSceneManager& sm, Data& d) : sceneManager(sm), data(d), ofxScene(RAMA_SCENE_NAME, false) {
         ofImage img;
-        ofLoadImage(img,"02_Rama/selector.png");
-        selector.loadData(img);
-        selector.setAnchorPercent(0.6,0.55);
-        selector.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.5));
+        ofLoadImage(img,"02_Rama/option.png");
+        option.loadData(img);
+        option.setAnchorPercent(0.475f,0.475f);
     }
     
     // scene setup
     void setup() {
-        selector.setColor(ofColor(255,0));
-        selector.setSize(1.);
+        int total = data.filteredRamas.size();
         
         ramas.clear();
-        ramas.assign(data.filteredRamas.size(),ofxAnimatableObject<ofTrueTypeFont>());
+        ramas.assign(total,ofxAnimatableObject<ofTrueTypeFont>());
         
-        for(int i=0; i<data.filteredRamas.size(); i++){
-            ramas[i].ofTrueTypeFont::load("verdana.ttf",32);
+        for(int i=0; i<total; i++){
+            ramas[i].ofTrueTypeFont::load("DINBold.otf",36);
             ramas[i].ofTrueTypeFont::setLineHeight(32);
             ramas[i].setText(data.filteredRamas[i]->nombre);
             ramas[i].setAnchorPercent(0.5,0.5);
-            ramas[i].setSize(1.);
-            ramas[i].setPosition(ofGetWidth()*0.5, ofGetHeight()*0.5 - 75*data.filteredRamas.size()/2 + i*75);
-            ramas[i].setColor(ofColor(255,0));
+            ramas[i].setSize(0.5f);
+            if(i<floor(total/2))
+                ramas[i].setPosition(ofGetWidth()*0.5-(floor(total/2)*RAMA_MARGIN)/2.0f + i*RAMA_MARGIN + RAMA_MARGIN/2, ofGetHeight()*0.5 - 100);
+            else
+                ramas[i].setPosition(ofGetWidth()*0.5-((total-floor(total/2))*RAMA_MARGIN)/2.0f + (i-floor(total/2))*RAMA_MARGIN + RAMA_MARGIN/2, ofGetHeight()*0.5 + 100);
+            ramas[i].setColor(ofColor(0,0));
         }
+        
+        selected=0;
         
         time=ofGetElapsedTimef();
     }
@@ -42,10 +47,9 @@ public:
 		
         // called on first enter update
         if(isEnteringFirst()) {
-            selector.color.animateToAfterDelay(ofColor(255,255),0.0);
-            
             for(int i=0;i<ramas.size();i++){
-                ramas[i].color.animateTo(ofColor(255,255));
+                ramas[i].color.animateToAfterDelay(ofColor(0,255),i*0.5f);
+                ramas[i].size.animateToAfterDelay(1.0f,i*0.5f);
             }
             
             ofLogNotice(RAMA_SCENE_NAME) << "update enter";
@@ -54,7 +58,7 @@ public:
         update();
 		
         // call finishedEntering() to indicate scne is done entering
-        if(!selector.isOrWillBeAnimating()) {
+        if(!ramas[selected].isOrWillBeAnimating()) {
             finishedEntering();
             ofLogNotice(RAMA_SCENE_NAME) << "update enter done";
         }
@@ -65,8 +69,6 @@ public:
         float t = ofGetElapsedTimef();
         float dt = t - time;
         time = t;
-        selector.update(dt);
-        
         for(int i=0;i<ramas.size();i++){
             ramas[i].update(dt);
         }
@@ -77,10 +79,8 @@ public:
 		
         // called on first exit update
         if(isExitingFirst()) {
-            selector.color.animateTo(ofColor(255,0));
-            
             for(int i=0;i<ramas.size();i++){
-                ramas[i].color.animateTo(ofColor(255,0));
+                ramas[i].color.animateTo(ofColor(0,0));
             }
 
             ofLogNotice(RAMA_SCENE_NAME) << "update exit";
@@ -89,7 +89,7 @@ public:
         update();
 		
         // call finishedExiting() to indicate scene is done exiting
-        if(!selector.isOrWillBeAnimating()) {
+        if(!ramas[selected].isOrWillBeAnimating()) {
             finishedExiting();            
             ofLogNotice(RAMA_SCENE_NAME) << "update exit done";
         }
@@ -97,9 +97,15 @@ public:
     
     // draw
     void draw() {
-        selector.draw();
-        
         for(int i=0;i<ramas.size();i++){
+            ofPushMatrix();
+            ofTranslate(ramas[i].position.getCurrentPosition());
+            ofScale(ramas[i].size.getCurrentValue(),ramas[i].size.getCurrentValue());
+            ofPushStyle();
+            ofSetColor(ofColor(255,ramas[i].color.getCurrentColor().a));
+            option.draw(0,0);
+            ofPopStyle();
+            ofPopMatrix();
             ramas[i].draw();
         }
     }
@@ -115,16 +121,23 @@ public:
         
         for(int i=0;i<ramas.size();i++){
             if(ramas[i].inside(ofPoint(x,y))){
+                selected=i;
                 data.applyRamaFilter(data.filteredRamas[i]);
                 ramas[i].size.animateTo(1.15);
-                sceneManager.gotoScene(PROVINCIA_SCENE_NAME);
+                if(!data.provinciaFilterApplied)
+                    sceneManager.gotoScene(PROVINCIA_SCENE_NAME);
+                else if(!data.universidadFilterApplied)
+                    sceneManager.gotoScene(UNIVERSIDAD_SCENE_NAME);
+                else
+                    sceneManager.gotoScene(INFO_SCENE_NAME);
                 break;
             }
         }
     }
     
-    ofxAnimatableObject<ofTexture> selector;
     vector< ofxAnimatableObject<ofTrueTypeFont> > ramas;
+    int selected;
+    ofTexture option;
     float time;
 
     Data& data;

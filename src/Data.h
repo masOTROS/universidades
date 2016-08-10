@@ -44,5 +44,7 @@ public:
     void applyProvinciaFilter(Provincia * p);
     void applyUniversidadFilter(Universidad * u);
     
+    bool ramaFilterApplied,provinciaFilterApplied,universidadFilterApplied;
+    
     void printFiltered();
 };

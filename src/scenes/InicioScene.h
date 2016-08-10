@@ -10,16 +10,21 @@ public:
     // set the scene name through the base class initializer
     InicioScene(ofxSceneManager& sm, Data& d) : sceneManager(sm), data(d), ofxScene(INICIO_SCENE_NAME, false) {
         ofImage img;
-        ofLoadImage(img,"00_Inicio/titulo-01.png");
-        title.loadData(img);
-        title.setAnchorPercent(0.5,0.5);
-        title.position.setDuration(2.);
-        title.position.setCurve(BOUNCY);
+        ofLoadImage(img,"00_Inicio/background.png");
+        background.loadData(img);
+        background.color.setDuration(1.0f);
+        
+        ofLoadImage(img,"00_Inicio/front.png");
+        front.loadData(img);
+        front.position.setDuration(2.0f);
     }
     
     // scene setup
     void setup() {
-        title.setPosition(ofGetWidth()*0.5,-ofGetHeight()*0.6);
+        background.setColor(ofColor(255,0));
+
+        front.setPosition(-ofGetHeight(),ofGetHeight());
+        front.setColor(ofColor(255,255));
         
         data.resetFiltered();
         
@@ -31,14 +36,16 @@ public:
 		
         // called on first enter update
         if(isEnteringFirst()) {
-            title.position.animateTo(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.5));
+            background.color.animateTo(ofColor(255,255));
+            front.position.animateTo(ofPoint(0,0));
+            
             ofLogNotice(INICIO_SCENE_NAME) << "update enter";
         }
         
         update();
 		
         // call finishedEntering() to indicate scne is done entering
-        if(!title.isOrWillBeAnimating()) {
+        if(!front.isOrWillBeAnimating()) {
             finishedEntering();
             ofLogNotice(INICIO_SCENE_NAME) << "update enter done";
         }
@@ -49,7 +56,8 @@ public:
         float t = ofGetElapsedTimef();
         float dt = t - time;
         time = t;
-        title.update(dt);
+        background.update(dt);
+        front.update(dt);
     }
     
     // called when scene is exiting
@@ -57,7 +65,8 @@ public:
 		
         // called on first exit update
         if(isExitingFirst()) {
-            title.position.animateTo(ofPoint(ofGetWidth()*0.5,ofGetHeight()*1.6));
+            background.color.animateTo(ofColor(255,0));
+            front.color.animateTo(ofColor(255,0));
             
             ofLogNotice(INICIO_SCENE_NAME) << "update exit";
         }
@@ -65,15 +74,16 @@ public:
         update();
 		
         // call finishedExiting() to indicate scene is done exiting
-        if(!title.isOrWillBeAnimating()) {
+        if(!front.isOrWillBeAnimating()) {
             finishedExiting();
             ofLogNotice(INICIO_SCENE_NAME) << "update exit done";
         }
     }
     
     // draw
-    void draw() {        
-        title.draw();
+    void draw() {
+        background.draw();
+        front.draw();
     }
     
     // cleanup
@@ -87,7 +97,8 @@ public:
         sceneManager.gotoScene(MENU_SCENE_NAME);
     }
     
-    ofxAnimatableObject<ofTexture> title;
+    ofxAnimatableObject<ofTexture> background;
+    ofxAnimatableObject<ofTexture> front;
     float time;
     
     Data& data;

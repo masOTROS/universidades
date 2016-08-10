@@ -68,8 +68,8 @@ void ofApp::update() {
 void ofApp::draw() {
     ofSetColor(255);
     background.draw(0,0);
-    inicio.draw();
     sceneManager.draw();
+    inicio.draw();
     
 #ifdef _DEBUG
 	// draw current scene info using the ofxBitmapString stream interface

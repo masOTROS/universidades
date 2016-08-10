@@ -5,6 +5,8 @@
 #include "ofxAnimatableObject.h"
 #include "Data.h"
 
+#define UNI_MARGIN 75
+#define UNI_MAX 6
 
 class UniversidadScene : public ofxScene {
     
@@ -13,29 +15,41 @@ public:
     // set the scene name through the base class initializer
     UniversidadScene(ofxSceneManager& sm, Data& d) : sceneManager(sm), data(d), ofxScene(UNIVERSIDAD_SCENE_NAME, false) {
         ofImage img;
-        ofLoadImage(img,"02_Rama/selector.png");
-        selector.loadData(img);
-        selector.setAnchorPercent(0.6,0.55);
-        selector.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.5));
+        ofLoadImage(img,"04_Universidad/up.png");
+        up.loadData(img);
+        up.setAnchorPercent(0.5,0.5);
+        up.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.2));
+        
+        ofLoadImage(img,"04_Universidad/down.png");
+        down.loadData(img);
+        down.setAnchorPercent(0.5,0.5);
+        down.setPosition(ofPoint(ofGetWidth()*0.5,ofGetHeight()*0.7));
     }
     
     // scene setup
     void setup() {
-        selector.setColor(ofColor(255,0));
-        selector.setSize(1.);
+        down.setColor(ofColor(255,0));
+        up.setColor(ofColor(255,0));
+        
+        int total = data.filteredUniversidades.size();
         
         universidades.clear();
-        universidades.assign(data.filteredUniversidades.size(),ofxAnimatableObject<ofTrueTypeFont>());
+        universidades.assign(total,ofxAnimatableObject<ofTrueTypeFont>());
         
-        for(int i=0; i<data.filteredUniversidades.size(); i++){
-            universidades[i].ofTrueTypeFont::load("verdana.ttf",32);
+        for(int i=0; i<total; i++){
+            universidades[i].ofTrueTypeFont::load("DINRegular.otf",32);
             universidades[i].ofTrueTypeFont::setLineHeight(32);
             universidades[i].setText(data.filteredUniversidades[i]->nombre);
             universidades[i].setAnchorPercent(0.5,0.5);
             universidades[i].setSize(1.);
-            universidades[i].setPosition(ofGetWidth()*0.5, ofGetHeight()*0.5 - 75*data.filteredUniversidades.size()/2 + i*75);
+            universidades[i].setPosition(ofGetWidth()*0.5, ofGetHeight()*0.25 + i*UNI_MARGIN + UNI_MARGIN/2);
             universidades[i].setColor(ofColor(255,0));
         }
+        selected=0;
+        
+        offset=0;
+        maxOffset=floor(total/UNI_MAX);
+        translate.reset(0.);
         
         time=ofGetElapsedTimef();
     }
@@ -45,10 +59,14 @@ public:
         
         // called on first enter update
         if(isEnteringFirst()) {
-            selector.color.animateToAfterDelay(ofColor(255,255),0.0);
+            down.color.animateTo(ofColor(255,((maxOffset-offset)>0)?255:0));
+            up.color.animateTo(ofColor(255,(offset>0)?255:0));
             
             for(int i=0;i<universidades.size();i++){
-                universidades[i].color.animateTo(ofColor(255,255));
+                if(i>=(offset*UNI_MAX) && i<((offset+1)*UNI_MAX))
+                    universidades[i].color.animateTo(ofColor(255,255));
+                else
+                    universidades[i].color.animateTo(ofColor(255,0));
             }
             
             ofLogNotice(UNIVERSIDAD_SCENE_NAME) << "update enter";
@@ -57,7 +75,7 @@ public:
         update();
         
         // call finishedEntering() to indicate scne is done entering
-        if(!selector.isOrWillBeAnimating()) {
+        if(!universidades[selected].isOrWillBeAnimating()) {
             finishedEntering();
             ofLogNotice(UNIVERSIDAD_SCENE_NAME) << "update enter done";
         }
@@ -72,8 +90,9 @@ public:
         for(int i=0;i<universidades.size();i++){
             universidades[i].update(dt);
         }
-        
-        selector.update(dt);
+        translate.update(dt);
+        up.update(dt);
+        down.update(dt);
     }
     
     // called when scene is exiting
@@ -81,7 +100,8 @@ public:
         
         // called on first exit update
         if(isExitingFirst()) {
-            selector.color.animateTo(ofColor(255,0));
+            up.color.animateTo(ofColor(255,0));
+            down.color.animateTo(ofColor(255,0));
             
             for(int i=0;i<universidades.size();i++){
                 universidades[i].color.animateTo(ofColor(255,0));
@@ -93,7 +113,7 @@ public:
         update();
         
         // call finishedExiting() to indicate scene is done exiting
-        if(!selector.isOrWillBeAnimating()) {
+        if(!universidades[selected].isOrWillBeAnimating()) {
             finishedExiting();
             ofLogNotice(UNIVERSIDAD_SCENE_NAME) << "update exit done";
         }
@@ -101,11 +121,14 @@ public:
     
     // draw
     void draw() {
-        selector.draw();
-        
+        ofPushMatrix();
+        ofTranslate(0,translate.getCurrentValue());
         for(int i=0;i<universidades.size();i++){
             universidades[i].draw();
         }
+        ofPopMatrix();
+        up.draw();
+        down.draw();
     }
     
     // cleanup
@@ -117,18 +140,55 @@ public:
         if(isExiting())
             return;
         
-        for(int i=0;i<universidades.size();i++){
-            if(universidades[i].inside(ofPoint(x,y))){
+        bool changed = false;
+        
+        if(up.inside(ofPoint(x,y))){
+            if(offset>0){
+                offset--;
+                changed=true;
+            }
+        }
+        else if(down.inside(ofPoint(x,y))){
+            if(offset<(maxOffset-1)){
+                offset++;
+                changed=true;
+            }
+        }
+        
+        if(changed){
+            down.color.animateTo(ofColor(255,((maxOffset-offset)>0)?255:0));
+            up.color.animateTo(ofColor(255,(offset>0)?255:0));
+            translate.animateTo(-((float)offset)*UNI_MAX*UNI_MARGIN);
+            for(int i=0;i<universidades.size();i++){
+                if(i>=(offset*UNI_MAX) && i<((offset+1)*UNI_MAX))
+                    universidades[i].color.animateTo(ofColor(255,255));
+                else
+                    universidades[i].color.animateTo(ofColor(255,0));
+            }
+            return;
+        }
+        
+        for(int i=(offset*UNI_MAX);i<universidades.size() && i<((offset+1)*UNI_MAX);i++){
+            if(universidades[i].inside(ofPoint(x,y-translate.getCurrentValue()))){
+                selected=i;
                 data.applyUniversidadFilter(data.filteredUniversidades[i]);
                 universidades[i].size.animateTo(1.15);
-                sceneManager.gotoScene(INFO_SCENE_NAME);
+                if(!data.ramaFilterApplied)
+                    sceneManager.gotoScene(RAMA_SCENE_NAME);
+                else if(!data.provinciaFilterApplied)
+                    sceneManager.gotoScene(PROVINCIA_SCENE_NAME);
+                else
+                    sceneManager.gotoScene(INFO_SCENE_NAME);
                 break;
             }
         }
     }
     
-    ofxAnimatableObject<ofTexture> selector;
+    ofxAnimatableObject<ofTexture> up,down;
     vector< ofxAnimatableObject<ofTrueTypeFont> > universidades;
+    int selected;
+    unsigned int offset,maxOffset;
+    ofxAnimatableFloat translate;
     float time;
     
     Data& data;
