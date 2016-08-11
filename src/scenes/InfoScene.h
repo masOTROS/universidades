@@ -24,19 +24,19 @@ public:
         rama.ofTrueTypeFont::setLineHeight(32);
         rama.setAnchorPercent(0.0,0.5);
         rama.setSize(1.);
-        rama.setPosition(75, 350);
+        rama.setPosition(70, 350);
         
         provincia.ofTrueTypeFont::load("DINRegular.otf",44);
         provincia.ofTrueTypeFont::setLineHeight(32);
         provincia.setAnchorPercent(0.0,0.5);
         provincia.setSize(1.);
-        provincia.setPosition(75, 410);
+        provincia.setPosition(70, 410);
         
         universidad.ofTrueTypeFont::load("DINRegular.otf",44);
         universidad.ofTrueTypeFont::setLineHeight(32);
         universidad.setAnchorPercent(0.0,0.5);
         universidad.setSize(1.);
-        universidad.setPosition(75, 470);
+        universidad.setPosition(70, 470);
         
         disciplines.assign(5,ofxAnimatableObject<ofTexture>());
         
@@ -67,7 +67,7 @@ public:
         background.setColor(ofColor(255,0));
         title.setPosition(ofPoint(0,-title.getHeight()));
         
-        rama.setText(data.filteredRamas[0]->nombre);
+        rama.setText("Ejemplos de "+data.filteredRamas[0]->nombre+":");
         rama.setColor(ofColor(255,0));
 
         provincia.setText(data.filteredProvincias[0]->nombre);
