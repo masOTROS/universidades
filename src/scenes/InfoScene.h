@@ -24,19 +24,19 @@ public:
         rama.ofTrueTypeFont::setLineHeight(32);
         rama.setAnchorPercent(0.0,0.5);
         rama.setSize(1.);
-        rama.setPosition(75, 325);
+        rama.setPosition(75, 350);
         
         provincia.ofTrueTypeFont::load("DINRegular.otf",44);
         provincia.ofTrueTypeFont::setLineHeight(32);
         provincia.setAnchorPercent(0.0,0.5);
         provincia.setSize(1.);
-        provincia.setPosition(75, 385);
+        provincia.setPosition(75, 410);
         
         universidad.ofTrueTypeFont::load("DINRegular.otf",44);
         universidad.ofTrueTypeFont::setLineHeight(32);
         universidad.setAnchorPercent(0.0,0.5);
         universidad.setSize(1.);
-        universidad.setPosition(75, 445);
+        universidad.setPosition(75, 470);
         
         disciplines.assign(5,ofxAnimatableObject<ofTexture>());
         
@@ -176,8 +176,8 @@ public:
         title.draw();
         disciplines[selected].draw();
         rama.draw();
-        provincia.draw();
-        universidad.draw();
+        //provincia.draw();
+        //universidad.draw();
     }
     
     // cleanup
